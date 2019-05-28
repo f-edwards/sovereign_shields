@@ -1,0 +1,47 @@
+---
+title: "Writing papers using markdown/R/LaTeX"
+author: "Frank Edwards"
+output: binb::metropolis
+---
+
+```{r setup, echo = FALSE, message = FALSE}
+rm(list=ls())
+library(tidyverse)
+library(broom)
+select<-dplyr::select
+set.seed(1)
+
+options(xtable.comment = FALSE)
+theme_set(theme_bw())
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+knitr::opts_chunk$set(warning=FALSE, message=FALSE, tidy = TRUE, size = "small")
+```
+
+## R Markdown
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+```{r cars, echo = TRUE}
+summary(cars)
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
