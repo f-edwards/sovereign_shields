@@ -40,7 +40,25 @@ p1<-ggplot(data = nhgis) +
              aes(x = lon, y = lat),
              size = 0.3) +
   theme_void()+
+  labs(subtitle = "American Indian / Alaska Native deaths at the hands of police, 2000 - 2018") +
+  labs(caption = "Dots indicate police-involved killings. Data from Fatal Encounters\nBlue areas indicate American Indian reservations, tribal subdivisions, and trust lands\nContact: frank.edwards@rutgers.edu; tyrb@vt.edu")
+  theme(plot.subtitle= element_text(hjust = 0.5)) +
   ggsave("./vis/map_aian_fe.png")
+
+p1<-ggplot(data = nhgis) +
+  geom_sf(size = 0.1, color = "gray60", fill = "white") +
+  geom_sf(data = nhgis_aian,
+          color = "dodgerblue", fill = "dodgerblue",
+          alpha = 0.5, size = 0.01) +
+  coord_sf(crs = st_crs(nhgis), datum = NA,
+           xlim = c(b["xmin"], b["xmax"]),
+           ylim = c(b["ymin"], b["ymax"])) +
+  geom_point(data = fe_amind_conv%>%
+               filter(!loc_state%in%(c("AK", "HI", "PR"))),
+             aes(x = lon, y = lat),
+             size = 0.3) +
+  theme_void()+
+  ggsave("./vis/map_aian_fe.pdf")
 
 ###### MORE MAPS!
 
@@ -104,6 +122,27 @@ p2<-ggplot(data = plot_dat %>%
   #labs(title = "Percent of AIAN governments with each legal institution, 2002") +
   ggsave("./vis/map_legal.png")
 
+p2<-ggplot(data = plot_dat %>%
+             filter(Variable%in%c("AIANH_PCT_TRIBAL_COURTS",
+                                  "AIANH_PCT_TRIBAL_JAIL",
+                                  "AIANH_PCT_TRIBAL_POLICE"))%>%
+             mutate(Variable = case_when(
+               Variable == "AIANH_PCT_TRIBAL_COURTS" ~ "Courts",
+               Variable == "AIANH_PCT_TRIBAL_JAIL" ~ "Jails",
+               Variable == "AIANH_PCT_TRIBAL_POLICE" ~ "Police"
+             ))%>%
+             rename(Proportion = Value)%>%
+             filter(!STUSPS %in%c("AK", "HI", "PR")),
+           aes(fill = Proportion)) +
+  geom_sf() +
+  coord_sf(datum=NA) +
+  facet_wrap(~Variable) + 
+  scale_fill_distiller(palette = "Spectral")+
+  theme_void() + 
+  #labs(title = "Percent of AIAN governments with each legal institution, 2002") +
+  ggsave("./vis/map_legal.pdf")
+
+
 p3<-ggplot(data = plot_dat %>%
              filter(Variable%in%c("POV_RATIO",
                                   "UNEMP_RATIO"))%>%
@@ -122,6 +161,24 @@ p3<-ggplot(data = plot_dat %>%
   #labs(title = "Ratio of AIAN homeland to state values, 2013-2017") + 
   ggsave("./vis/map_ineq.png")
 
+p3<-ggplot(data = plot_dat %>%
+             filter(Variable%in%c("POV_RATIO",
+                                  "UNEMP_RATIO"))%>%
+             mutate(Variable = case_when(
+               Variable == "POV_RATIO" ~ "Poverty",
+               Variable == "UNEMP_RATIO" ~ "Unemployment"
+             ))%>%
+             rename(Ratio = Value)%>%
+             filter(!STUSPS %in%c("AK", "HI", "PR")),
+           aes(fill = Ratio)) +
+  geom_sf() +
+  coord_sf(datum=NA) +
+  facet_wrap(~Variable) + 
+  scale_fill_distiller(palette = "Spectral")+
+  theme_void() + 
+  #labs(title = "Ratio of AIAN homeland to state values, 2013-2017") + 
+  ggsave("./vis/map_ineq.pdf")
+
 p4<-ggplot(data = plot_dat %>%
              filter(Variable%in%c("FE_RT_AIAN"))%>%
              mutate(Variable = case_when(
@@ -138,4 +195,18 @@ p4<-ggplot(data = plot_dat %>%
   #labs(title = "AIAN Police killings per 100,000 persons") + 
   ggsave("./vis/map_fe_aian_st.png")
 
-
+p4<-ggplot(data = plot_dat %>%
+             filter(Variable%in%c("FE_RT_AIAN"))%>%
+             mutate(Variable = case_when(
+               Variable == "FE_RT_AIAN" ~ "AIAN deaths per 100,000 per year"
+             ))%>%
+             rename(Rate = Value)%>%
+             filter(!STUSPS %in%c("AK", "HI", "PR")),
+           aes(fill = Rate)) +
+  geom_sf() +
+  coord_sf(datum=NA) +
+  facet_wrap(~Variable) + 
+  scale_fill_distiller(palette = "Spectral")+
+  theme_void() + 
+  #labs(title = "AIAN Police killings per 100,000 persons") + 
+  ggsave("./vis/map_fe_aian_st.pdf")

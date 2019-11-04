@@ -9,39 +9,6 @@ select<-dplyr::select
 
 ################# read in data for 'sovereign shields'
 
-### read in afcars
-
-afcars<-read_rds("./data/afcars_dat_all.rds")
-
-afcars_aian<-afcars %>% 
-  filter(amiakn==1) %>% 
-  mutate(tpr_in_yr = year(tprdate)==fy) %>% 
-  select(stfcid, fy, state, st, fipscode, entered,
-         inatend, tpr_in_yr, istpr, rf1amakn, rf2amakn,
-         rf1nhopi, rf2nhopi) %>% 
-  filter(fy>2003)
-
-na_to_zero<-function(x){ifelse(is.na(x),0,x)}
-
-afcars_st<-afcars_aian %>% 
-  group_by(st, fy) %>% 
-  mutate_at(vars(rf1amakn, rf2amakn, rf1nhopi, rf2nhopi),
-            na_to_zero) %>% 
-  summarise(entered = sum(entered, na.rm=T),
-            inatend = sum(inatend, na.rm=T),
-            istpr = sum(istpr, na.rm=T),
-            tpr_in_yr = sum(tpr_in_yr, na.rm=T),
-            fc_parent_aian = sum(rf1amakn ==1 | rf2amakn==1)/n()) %>% 
-  rename(stusps = st,
-         year = fy) 
-
-afcars_st <- afcars_st%>% 
-  left_join(pop %>% 
-              rename(stusps = state))
-
-write_csv(afcars_st, "./data/afcars_aian.csv")
-
-
 pop<-read_fwf("./data/us.1990_2017.singleages.adjusted.txt",
               fwf_widths(c(4, 2, 2, 3, 2, 1, 1, 1, 2, 8),
                          c("year", "state", "st_fips",
@@ -70,7 +37,6 @@ pop<-pop %>%
 #govs<-read_csv("./data/TribalLeadersDirectory.csv")
 ### census of tribal justice systems
 cens_trib_just<-read_dta("./data/04439-0001-Data.dta")
-
 cens_trib_just<-cens_trib_just%>%
   filter(PARTICIP==1)%>%
   mutate(POLICE_TRIBAL = A7_4 == 1,
@@ -362,4 +328,35 @@ saveRDS(state_dat%>%
                  hs_ratio = aianh_less_hs_rt / (less_hs_25 / pop_hs_25)),
         "./data/state_dat.rds")
 
+### read in afcars
+
+afcars<-read_rds("./data/afcars_dat_all.rds")
+
+afcars_aian<-afcars %>% 
+  filter(amiakn==1) %>% 
+  mutate(tpr_in_yr = year(tprdate)==fy) %>% 
+  select(stfcid, fy, state, st, fipscode, entered,
+         inatend, tpr_in_yr, istpr, rf1amakn, rf2amakn,
+         rf1nhopi, rf2nhopi) %>% 
+  filter(fy>2003)
+
+na_to_zero<-function(x){ifelse(is.na(x),0,x)}
+
+afcars_st<-afcars_aian %>% 
+  group_by(st, fy) %>% 
+  mutate_at(vars(rf1amakn, rf2amakn, rf1nhopi, rf2nhopi),
+            na_to_zero) %>% 
+  summarise(entered = sum(entered, na.rm=T),
+            inatend = sum(inatend, na.rm=T),
+            istpr = sum(istpr, na.rm=T),
+            tpr_in_yr = sum(tpr_in_yr, na.rm=T),
+            fc_parent_aian = sum(rf1amakn ==1 | rf2amakn==1)/n()) %>% 
+  rename(stusps = st,
+         year = fy) 
+
+afcars_st <- afcars_st%>% 
+  left_join(pop %>% 
+              rename(stusps = state))
+
+write_csv(afcars_st, "./data/afcars_aian.csv")
 
