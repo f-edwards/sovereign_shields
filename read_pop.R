@@ -2,7 +2,7 @@
 #### Frank Edwards, Hedwig Lee, Michael Esposito
 library(tidyverse)
 
-pop<-read_fwf("./data/us.1990_2017.19ages.adjusted.txt",
+pop<-read_fwf("./data/us.1990_2017.singleages.adjusted.txt",
               fwf_widths(c(4, 2, 2, 3, 2, 1, 1, 1, 2, 8),
                          c("year", "state", "st_fips", "cnty_fips", "reg", "race", 
                            "hisp", "sex", "age", "pop"))) %>% 
@@ -14,18 +14,21 @@ pop<-pop%>%
   mutate(pop = as.integer(pop))%>%
   mutate(race_ethn = 
            case_when(
-             race==1 & hisp ==0 ~ "white",
-             race==2 ~ "black",
-             race==3 ~ "amind",
-             race==4 ~ "asian",
-             hisp==1 ~ "latino")
+             race==1 & hisp ==0 ~ "White",
+             race==2 ~ "Black",
+             race==3 ~ "AI/AN",
+             race==4 ~ "API",
+             hisp==1 ~ "Latinx")
          )
 
 pop_cnty<-pop%>%
   group_by(year, st_fips, cnty_fips, race_ethn, sex, age)%>%
   summarise(pop = sum(pop))%>%
-  ungroup()%>%
-  mutate(year = year + 1)
+  ungroup() %>% 
+  summarise(child_pop = sum(pop) * (age<18),
+            pop = sum(pop))
+
+  
 
 ### recode variables
 

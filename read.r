@@ -11,36 +11,20 @@ select<-dplyr::select
 
 ### read in afcars
 
-afcars<-read_rds("./data/afcars_dat_all.rds")
+afcars<-read_csv("./data/afcars_imputed_all_cases.csv")
 
 afcars_aian<-afcars %>% 
-  filter(amiakn==1) %>% 
-  mutate(tpr_in_yr = year(tprdate)==fy) %>% 
-  select(stfcid, fy, state, st, fipscode, entered,
-         inatend, tpr_in_yr, istpr, rf1amakn, rf2amakn,
-         rf1nhopi, rf2nhopi) %>% 
-  filter(fy>2003)
+  filter(race_ethn=="AI/AN") %>% 
+  filter(year>2003) %>% 
+  filter(.imp!=0)
 
 na_to_zero<-function(x){ifelse(is.na(x),0,x)}
 
-afcars_st<-afcars_aian %>% 
-  group_by(st, fy) %>% 
+afcars_aian<-afcars_aian %>% 
   mutate_at(vars(rf1amakn, rf2amakn, rf1nhopi, rf2nhopi),
-            na_to_zero) %>% 
-  summarise(entered = sum(entered, na.rm=T),
-            inatend = sum(inatend, na.rm=T),
-            istpr = sum(istpr, na.rm=T),
-            tpr_in_yr = sum(tpr_in_yr, na.rm=T),
-            fc_parent_aian = sum(rf1amakn ==1 | rf2amakn==1)/n()) %>% 
-  rename(stusps = st,
-         year = fy) 
+            na_to_zero) 
 
-afcars_st <- afcars_st%>% 
-  left_join(pop %>% 
-              rename(stusps = state))
-
-write_csv(afcars_st, "./data/afcars_aian.csv")
-
+write_csv(afcars_aian, "./data/afcars_aian.csv")
 
 pop<-read_fwf("./data/us.1990_2017.singleages.adjusted.txt",
               fwf_widths(c(4, 2, 2, 3, 2, 1, 1, 1, 2, 8),

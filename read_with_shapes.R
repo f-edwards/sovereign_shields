@@ -13,7 +13,9 @@ pop<-read_fwf("./data/us.1990_2017.singleages.adjusted.txt",
               fwf_widths(c(4, 2, 2, 3, 2, 1, 1, 1, 2, 8),
                          c("year", "state", "st_fips",
                            "cnty_fips", "reg", "race",
-                           "hisp", "sex", "age", "pop")))
+                           "hisp", "sex", "age", "pop"))) %>% 
+  filter(year>=2000) %>% 
+  mutate(year = year+1) # adjust for 2018 end point
 
 pop<-pop%>%
   mutate(pop = as.integer(pop))%>%
@@ -21,17 +23,18 @@ pop<-pop%>%
            case_when(
              race==1 & hisp ==0 ~ "White",
              race==2 ~ "Black",
-             race==3 ~ "AI/AN",
-             race==4 ~ "Asian/PI",
-             hisp==1 ~ "Hispanic")) %>%
-  mutate(age = as.integer(age)) %>%
-  filter(year>=2000)
+             race==3 ~ "AIAN",
+             race==4 ~ "API",
+             hisp==1 ~ "Latinx")) %>%
+  mutate(age = as.integer(age)) 
 
-pop<-pop %>% 
-  filter(age<18) %>% 
-  filter(race_ethn=="AI/AN") %>% 
-  group_by(state, year) %>% 
-  summarise(child_pop_aian = sum(pop))
+pop_st<-pop %>% 
+  group_by(st_fips, year, race_ethn) %>% 
+  summarise(pop = sum(pop)) %>% 
+  left_join(pop %>% 
+              group_by(st_fips, year, race_ethn) %>% 
+              filter(age<18) %>% 
+              summarise(pop_child = sum(pop)))
 
 ### directory of tribal leaders
 #govs<-read_csv("./data/TribalLeadersDirectory.csv")
@@ -73,11 +76,10 @@ cens_trib_just<-cens_trib_just%>%
 
 cens_trib_just[is.na(cens_trib_just)]<-FALSE
   
-
 ### annual survey of jails in indian country
 #ann_surv<-read_tsv("./data/37006-0001-Data.tsv")
 ### fatal encounters
-fe <- read_csv("./data/fe_8_1_18.csv")
+fe <- read_csv("./data/fe_11_2019.csv")
 
 # .... make names more user-friendly
 names(fe)<-c("id", "name", "age", "gender", "race", "URL", "death_date", 
@@ -85,23 +87,19 @@ names(fe)<-c("id", "name", "age", "gender", "race", "URL", "death_date",
              "loc_full_address", "Latitude", "Longitude", "agency", 
              "cause_of_death","cause_description", "official_disposition", 
              "news_url", "mental_illness", "video", "null1", "dateanddesc", 
-             "null2", "id2", "year", "null3")
+            "id2", "year")
 
 fe <- fe %>%
-  # select(id, name, age, gender, race, death_date, 
-  #        loc_state, loc_county, loc_zip, loc_city, agency,
-  #        agency, cause_of_death, official_disposition,
-  #        Latitude, Longitude, year) %>%
-  mutate(race = ifelse(race == "African-American/Black", "black", race),
-         race = ifelse(race == "Asian/Pacific Islander", "asian", race),
-         race = ifelse(race == "European-American/White", "white", race),
-         race = ifelse(race == "Hispanic/Latino", "latino", race),
+  mutate(race = ifelse(race == "African-American/Black", "Black", race),
+         race = ifelse(race == "Asian/Pacific Islander", "Asian/PI", race),
+         race = ifelse(race == "European-American/White", "White", race),
+         race = ifelse(race == "Hispanic/Latino", "Latinx", race),
          race = ifelse(race == "Middle Eastern", "other", race),
-         race = ifelse(race == "Native American/Alaskan", "amind", race),
+         race = ifelse(race == "Native American/Alaskan", "AI/AN", race),
          race = ifelse(race == "Race unspecified", NA, race))
 
 fe_amind<-fe%>%
-  filter(race=="amind")%>%
+  filter(race=="AI/AN")%>%
   filter(!(is.na(year)))
 
 fe_amind_year<-fe_amind
@@ -308,7 +306,12 @@ state_dat<-state_dat%>%
                         aianh_pct_tribal_jail = sum(jail_tribal,na.rm=TRUE)/n(),
                         aianh_pct_tribal_courts = sum(courts,na.rm=TRUE)/n()
                         )%>%
-              rename(stusps = state))
+              rename(stusps = state)) 
+
+### join state child population onto state table
+
+
+
 
 ### create state level aian homeland measures for comparisons
 
@@ -329,34 +332,53 @@ saveRDS(state_dat%>%
         "./data/state_dat.rds")
 
 ### read in afcars
+afcars<-read_csv("./data/afcars_imputed_all_cases.csv")
 
-afcars<-read_rds("./data/afcars_dat_all.rds")
+#### join to pop data
+# pop_st<-pop_st %>% 
+#   filter(race_ethn%in%c("White", "AI/AN")) %>% 
+#   pivot_wider(id_cols = c("state", "year"), 
+#               names_from = race_ethn, 
+#               values_from = c("pop_child")) %>% 
+#   rename(pop_child_aian=`AI/AN`,
+#          pop_child_white = White)
 
 afcars_aian<-afcars %>% 
-  filter(amiakn==1) %>% 
-  mutate(tpr_in_yr = year(tprdate)==fy) %>% 
-  select(stfcid, fy, state, st, fipscode, entered,
-         inatend, tpr_in_yr, istpr, rf1amakn, rf2amakn,
-         rf1nhopi, rf2nhopi) %>% 
-  filter(fy>2003)
+  filter(year>2003) %>% 
+  filter(race_ethn=="AI/AN") %>% 
+  filter(.imp!=0) %>% 
+  filter(state!=72)
 
 na_to_zero<-function(x){ifelse(is.na(x),0,x)}
 
-afcars_st<-afcars_aian %>% 
-  group_by(st, fy) %>% 
+afcars_aian<-afcars_aian %>% 
   mutate_at(vars(rf1amakn, rf2amakn, rf1nhopi, rf2nhopi),
-            na_to_zero) %>% 
-  summarise(entered = sum(entered, na.rm=T),
-            inatend = sum(inatend, na.rm=T),
-            istpr = sum(istpr, na.rm=T),
-            tpr_in_yr = sum(tpr_in_yr, na.rm=T),
-            fc_parent_aian = sum(rf1amakn ==1 | rf2amakn==1)/n()) %>% 
-  rename(stusps = st,
-         year = fy) 
+            na_to_zero) 
 
-afcars_st <- afcars_st%>% 
-  left_join(pop %>% 
-              rename(stusps = state))
+afcars_aian_st<-afcars_aian %>% 
+  group_by(.imp, state, year) %>% 
+  summarise(fc_entered = sum(entered),
+         fc_istpr = sum(istpr),
+         fc_caseload = n(),
+         fc_totalrem_mn = mean(totalrem),
+         fc_inst = sum(curplset%in%c(4,5)),
+         fc_aian_home = sum(curplset%in%c(1,2,3) * (rf1amakn==1|rf2amakn==1))/
+           sum(curplset%in%c(1,2,3)))
 
-write_csv(afcars_st, "./data/afcars_aian.csv")
+expands<-expand_grid(.imp=unique(afcars$.imp), 
+                     state=unique(afcars$state),
+                     year= unique(afcars$year)) %>% 
+  filter(.imp>0, year>2003, state!=72)
 
+afcars_aian_st<-expands %>% 
+  left_join(afcars_aian_st)%>% 
+  left_join(pop_st %>% 
+              filter(race_ethn == "AIAN") %>% 
+              select(st_fips, year, pop_child) %>% 
+              mutate(state = as.numeric(st_fips))) %>% 
+  mutate_at(c("fc_istpr", "fc_caseload", "fc_inst", "fc_entered"), 
+            function(x){ifelse(is.na(x), 0, x)})
+
+write_csv(afcars_aian_st, "./data/afcars_aian_st.csv")
+
+quit(save="no")
