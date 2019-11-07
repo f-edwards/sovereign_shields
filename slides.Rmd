@@ -593,7 +593,7 @@ ggplot(afcars_st_plot %>%
 <!--   theme(legend.position = "bottom") +  -->
 <!--   labs(fill = "Tribal legal institutions present", -->
 <!--        color = "Tribal legal institutions present") +  -->
-<!--   ggsave("vis/preds_disadv.pdf") -->
+<!--   ggsave("vis/preds_disadv.pdf") --> 
 
 State models (state by year 2013 - 2018):
 
