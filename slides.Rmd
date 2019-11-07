@@ -9,6 +9,7 @@ rm(list=ls())
 library(tidyverse)
 library(broom)
 library(knitr)
+library(tinytex)
 select<-dplyr::select
 set.seed(1)
 
@@ -137,14 +138,11 @@ ggplot(plot_dat,
 
 ```
 
-
-*Source:* Bureau of Justice Statistics
-
 # Findings
 
 ## Police killings of American Indians and Alaska Natives, 2008 - 2018
 
-![](./vis/map_aian_fe.png)
+\includegraphics[width=\linewidth]{./vis/map_aian_fe.png}
 
 ## Police killings of American Indians and Alaska Natives per year per 100,000 population, 2008 - 2018
 
@@ -255,17 +253,8 @@ ggplot(afcars_st_plot %>%
   scale_fill_distiller(palette = "Spectral", limits = c(0,35)) 
 ```
 
-## Inequality in poverty and unemployment. Ratio of rates in American Indian Homelands over rates in states, 2013 - 2017
-
-\begin{center}
-\includegraphics[height = 0.8\textheight]{./vis/map_ineq.png}
-\end{center}
-
 ## Proportion of tribal governments with categories of legal institutions by state, 2002
 
-\begin{center}
-\includegraphics[height = 0.8\textheight]{./vis/map_legal.png}
-\end{center}
 
 ## Models
 
@@ -607,18 +596,18 @@ American Indian home land models (pooled 2000 - 2018):
 \[var(deaths) = \theta \cdot \lambda \]
 
 
-## Predicted American Indian deaths on tribal lands per 100,000 persons per year 
+<!-- ## Predicted American Indian deaths on tribal lands per 100,000 persons per year  -->
 
-\begin{center}
-\includegraphics[height = 0.9\textheight]{./vis/preds_disadv.pdf}
-\end{center}
+<!-- \begin{center} -->
+<!-- \includegraphics[height = 0.9\textheight]{./vis/preds_disadv.pdf} -->
+<!-- \end{center} -->
 
-## Predicted American Indian deaths in states per 100,000 persons per year
+<!-- ## Predicted American Indian deaths in states per 100,000 persons per year -->
 
 
-\begin{center}
-\includegraphics[height = 0.9\textheight]{./vis/preds_state.pdf}
-\end{center}
+<!-- \begin{center} -->
+<!-- \includegraphics[height = 0.9\textheight]{./vis/preds_state.pdf} -->
+<!-- \end{center} -->
 
 # Discussion 
 
