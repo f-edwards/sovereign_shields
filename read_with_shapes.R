@@ -40,9 +40,10 @@ pop_st<-pop %>%
 #govs<-read_csv("./data/TribalLeadersDirectory.csv")
 ### census of tribal justice systems
 cens_trib_just<-read_dta("./data/04439-0001-Data.dta")
+
 cens_trib_just<-cens_trib_just%>%
   filter(PARTICIP==1)%>%
-  mutate(POLICE_TRIBAL = A7_4 == 1,
+  mutate(POLICE_TRIBAL = A1 == 1,
          POLICE_TRIBAL_STATERECOG = A4 == 1,
          POLICE_TRIBAL_OFF_RES = A5 == 1,
          POLICE_TRIBAL_NON_IND = A6  == 1,

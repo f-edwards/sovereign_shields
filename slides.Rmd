@@ -1,47 +1,315 @@
 ---
-title: "Writing papers using markdown/R/LaTeX"
-author: "Frank Edwards"
+title: "Sovereign Shields: Law Enforcement and State Violence in Indian Country"
+author: "Theresa Rocha Beardall and Frank Edwards"
 output: binb::metropolis
 ---
 
-```{r setup, echo = FALSE, message = FALSE}
+```{r setup, echo = FALSE, message = FALSE, warning=FALSE}
 rm(list=ls())
 library(tidyverse)
 library(broom)
+library(knitr)
 select<-dplyr::select
 set.seed(1)
 
 options(xtable.comment = FALSE)
 theme_set(theme_bw())
-def.chunk.hook  <- knitr::knit_hooks$get("chunk")
-knitr::knit_hooks$set(chunk = function(x, options) {
-  x <- def.chunk.hook(x, options)
-  ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
-})
-knitr::opts_chunk$set(warning=FALSE, message=FALSE, tidy = TRUE, size = "small")
+# def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+# knitr::knit_hooks$set(chunk = function(x, options) {
+#   x <- def.chunk.hook(x, options)
+#   ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+# })
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, tidy = TRUE, size = "small")
+
+library(maps)
+source("main.R")
+state_map<-map_data("state")
+afcars_st<-afcars_st %>% 
+  mutate(region=tolower(state))
+fe_st<-fe_st %>% 
+  mutate(region=tolower(state))
 ```
 
-## R Markdown
+## John Duane Fairbanks
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+\begin{scriptsize} \textbf{04/18/2019 Coon Rapids,	MN:} John Duane Fairbanks allegedly pulled a gun during a routine traffic stop and exchanged gunfire with Coon Rapids police about 1:30 a.m. After fleeing on foot and shooting at officers, Fairbanks hid in a nearby neighborhood. Officers found Fairbanks and exchanged gunfire again, this time killing him. Coon Rapids police Officer Alex Hattstrom and Anoka County sheriff's Deputy Christopher Vitek Jr. both fired their guns, and Coon Rapids police Officer Geoff Neumann reportedly discharged his Taser. \end{scriptsize}
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+\begin{center}
+\includegraphics[height = 0.5\textheight]{./vis/John-Duane-Fairbanks.jpeg}
+\end{center}
 
-## Slide with Bullets
+## Wendell Van Kee Howard Baier
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+**04/28/2019 Havre North,	MT:** A vehicle had been reported as stolen and was being pursued by the Havre Police Department when it collided with an eastbound vehicle. The driver of the vehicle that was reported stolen, Wendell Howard, was killed in the crash.
 
-## Slide with R Output
+\begin{center}
+\includegraphics[height = 0.5\textheight]{./vis/WendellHoward.jpg}
+\end{center}
 
-```{r cars, echo = TRUE}
-summary(cars)
+## Deion Grayhat
+
+**05/18/2019 Tonalea, AZ:** Police killed Deion "Yonny" Grayhat in Tonolea but did not provide any information about the person killed or what precipitated the shooting.
+
+\begin{center}
+\includegraphics[height = 0.5\textheight]{./vis/Deion-Grayhat.jpg}
+\end{center}
+
+## American Indians / Alaksa Natives are at high risk of being killed by police 
+
+|Sex|Race| Lifetime Deaths per 100,000| Risk ratio |
+|---|----|----------------------------------:| ---:|
+| M | AI/AN| 59   | 1.5 | 
+| M | White | 40 | - |
+| F | AI/AN| 4  | 2 |
+| F | White | 2 | - |
+
+\scriptsize \textit{Source}: Edwards, Lee and Esposito, 2019. "Risk of being killed by police use of force in the United States by age, race–ethnicity, and sex". Proceedings of the National Academy of Sciences, 116 (34)
+
+## Police killings as a function of the political status of tribal nations
+
+- Tribal nations are “domestic dependent” nations – wards of the federal government.
+- Law structures colonial state violence through 1) legal history and 2) place-based legal structures
+
+## Theory: Sovereign shields and state violence
+
+- Does tribal sovereignty shield American Indians from state violence?     
+     - Police violence (this paper)
+     - Arrest and incarceration
+     - Family separations through child welfare systems
+
+## Native nationhood and law enforcement
+
+*Historical Encounters with Law Enforcement*
+
+- **1790s-1820s:** Treaties, Trade and Intercourse Period 
+-	**1820s-1880s:** Removal and Reservation Period 
+-	**1880s-1920s:** Allotment and Assimilation Period 
+     - Indian Agents acted on behalf of the U.S. government in Indian Country
+     
+*Contemporary Encounters with Law Enforcement*
+
+- **1920s-1940s:** Indian New Deal Period 
+-	**1940s-1960s:** Termination Period 
+     - PL 280, "shared" jurisdiction
+- **1960s-Today:** Self-Determination Period 
+     - Police act on behalf of federal, state, local, and tribal government in Indian Country
+
+# Findings, data and methods
+
+## Key findings
+
+-	Police killings of American Indians are concentrated in states West of the Mississippi River. \pause
+-	There are more killings by police in states where state and local law enforcement have jurisdiction on Indian lands. \pause
+-	Killings occur most frequently in states with high levels of Native/White income inequality. \pause
+-	Killings occur less frequently on reservations and tribal lands where communities operate their own courts and criminal justice institutions. 
+
+## Data
+
+- Fatal Encounters, 2000 - 2018, victims identified as American Indian / Alaska Native
+- Census of Tribal Justice Agencies (CTJA) 2002
+- American Community Survey (ACS) 2013 - 2017 5 year
+- AFCARS
+- CTJA linked to US Census American Indian Home Land shape files
+
+## Measures
+
+- FE: AI/AN Deaths, AI/AN Deaths on tribal land
+- CTJA: tribal government has own legal institutions: [police, jail, courts]
+- ACS: per capita income for states 
+     - American Indian homeland / State ratios of poverty rates, unemployment rates
+- PL 280 status: [mandatory, voluntary, non-PL 280]
+
+## PL 280 by state
+
+```{r}
+plot_dat<-state_dat %>% 
+  mutate(region = tolower(state)) %>% 
+  left_join(state_map)
+
+ggplot(plot_dat,
+       aes(x=long, y = lat, fill = pl280,
+           group = group)) + 
+  geom_polygon(color = "black") + 
+  theme_void() +
+  labs(fill = "") +
+  theme(legend.position = "bottom") +
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) 
+
 ```
 
-## Slide with Plot
 
-```{r pressure}
-plot(pressure)
+*Source:* Bureau of Justice Statistics
+
+## Models
+
+State models (state by year 2013 - 2018):
+
+\[deaths \sim Poisson(\lambda) \]
+\[log(E[deaths|X]) = \lambda = \beta X + \alpha_{state} + \zeta_{year} + log(pop) \]
+
+American Indian home land models (pooled 2000 - 2018):
+
+\[deaths \sim QuasiPoisson(\lambda, \theta) \]
+\[log(E[deaths|X]) = \theta = \beta X + log(pop)\]
+\[var(deaths) = \theta \cdot \lambda \]
+
+# Findings
+
+## Police killings of American Indians and Alaska Natives, 2008 - 2018
+
+![](./vis/map_aian_fe.png)
+
+## Police killings of American Indians and Alaska Natives per year per 100,000 population, 2008 - 2018
+
+```{r}
+fe_yrs_n<-length(unique(fe_st$year))
+fe_st_plot<-fe_st %>% 
+  ungroup() %>% 
+  group_by(region) %>% 
+  summarise(value = mean(fe_deaths)/max(total_population_amind)* 1e5) %>%  # convert to deaths/100k/yr
+  mutate(var="Deaths caused by police")
+
+afcars_st_plot<-afcars_st %>% 
+  ungroup() %>% 
+  group_by(region) %>% 
+  summarise(value = mean(fc_caseload/pop_child) * 100) %>% 
+  mutate(var = "Foster care caseload")
+
+plot_dat<-fe_st_plot %>% 
+  bind_rows(afcars_st_plot) %>% 
+  left_join(state_map)
+
+ggplot(plot_dat %>% 
+         filter(var=="Deaths caused by police"),
+       aes(x=long, y = lat, fill = value,
+           group = group)) + 
+  geom_polygon(color = "black") + 
+  theme_void() +
+  labs(fill = "") +
+  theme(legend.position = "bottom") +
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  scale_fill_distiller(palette = "Spectral") 
+
 ```
 
+## American Indian children in foster care as percent of child population, 2004-2017 annual average
+
+```{r}
+ggplot(plot_dat %>% 
+         filter(var=="Foster care caseload"),
+       aes(x=long, y = lat, fill = value,
+           group = group)) + 
+  geom_polygon(color = "black") + 
+  theme_void() +
+  labs(fill = "") +
+  theme(legend.position = "bottom") +
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  scale_fill_distiller(palette = "Spectral") 
+
+```
+
+## Police killings and foster care caseloads by state, in mean-centered standard deviation units
+
+```{r}
+ggplot(plot_dat %>% 
+         group_by(var) %>% 
+         mutate(value = scale(value)),
+       aes(x=long, y = lat, fill = value,
+           group = group)) + 
+  geom_polygon(color = "black") + 
+  theme_void() +
+  labs(fill = "") +
+  theme(legend.position = "bottom") +
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  scale_fill_distiller(palette = "Spectral") + 
+  facet_wrap(~var)
+```
+
+## Percent of AIAN children in state foster care in AIAN foster homes, 2004 - 2017 average
+
+```{r}
+afcars_st_plot<-afcars_st %>% 
+  ungroup() %>% 
+  group_by(region) %>% 
+  summarise("Caseload" = mean(fc_caseload/pop_child, na.rm=TRUE) * 100,
+            "Entries" = mean(fc_entered/pop_child, na.rm=TRUE) *100,
+            "Institutionalized" = mean(fc_inst/fc_caseload, na.rm=TRUE)*100,
+            "In AIAN foster home" = mean(fc_aian_home, na.rm=TRUE)*100) %>% 
+  pivot_longer(cols=c(Caseload, Entries, Institutionalized, `In AIAN foster home`), 
+               names_to = "var",
+               values_to = "value") %>% 
+  group_by(var) %>% 
+  left_join(state_map)
+                    
+ggplot(afcars_st_plot %>% 
+         filter(var=="In AIAN foster home"),
+       aes(x=long, y = lat, fill = value,
+           group = group)) + 
+  geom_polygon(color = "black") + 
+  theme_void() +
+  labs(fill = "") +
+  theme(legend.position = "bottom") +
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  scale_fill_distiller(palette = "Spectral") 
+```
+
+## Percent of AIAN children in state foster care in group homes or institutions, 2004 - 2017 average
+
+```{r}
+ggplot(afcars_st_plot %>% 
+         filter(var=="Institutionalized"),
+       aes(x=long, y = lat, fill = value,
+           group = group)) + 
+  geom_polygon(color = "black") + 
+  theme_void() +
+  labs(fill = "") +
+  theme(legend.position = "bottom") +
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  scale_fill_distiller(palette = "Spectral", limits = c(0,35)) 
+```
+
+## Inequality in poverty and unemployment. Ratio of rates in American Indian Homelands over rates in states, 2013 - 2017
+
+\begin{center}
+\includegraphics[height = 0.8\textheight]{./vis/map_ineq.png}
+\end{center}
+
+## Proportion of tribal governments with categories of legal institutions by state, 2002
+
+\begin{center}
+\includegraphics[height = 0.8\textheight]{./vis/map_legal.png}
+\end{center}
+
+## Predicted American Indian deaths on tribal lands per 100,000 persons per year 
+
+\begin{center}
+\includegraphics[height = 0.9\textheight]{./vis/preds_disadv.pdf}
+\end{center}
+
+## Predicted American Indian deaths in states per 100,000 persons per year
+
+
+\begin{center}
+\includegraphics[height = 0.9\textheight]{./vis/preds_state.pdf}
+\end{center}
+
+# Discussion 
+
+##  Next steps
+
+*Theoretical implications*
+
+- Legacies of colonization drive police killings of American Indians 
+- Sovereignty may act as a shield \pause
+
+*Next steps*
+
+- Other forms of state violence: arrest, incarceration, family separation \pause
+- More sophisticated measures of tribal sovereignty \pause
+- 71 percent of AI/AN population is in urban metros \pause
+- Do tribal sovereigns have effects beyond their borders?
+
+## Thank you 
+
+- Theresa: tyr5@cornell.edu
+- Frank: frank.edwards@rutgers.edu
