@@ -40,10 +40,9 @@ p1<-ggplot(data = nhgis) +
              aes(x = lon, y = lat),
              size = 0.3) +
   theme_void()+
-  labs(subtitle = "American Indian / Alaska Native deaths at the hands of police, 2000 - 2018") +
   labs(caption = "Dots indicate police-involved killings. Data from Fatal Encounters\nBlue areas indicate American Indian reservations, tribal subdivisions, and trust lands.")
   theme(plot.subtitle= element_text(hjust = 0.5)) +
-  ggsave("./vis/map_aian_fe.png")
+  ggsave("./vis/map_aian_fe.png", width = 8, height = 6)
 
 p1<-ggplot(data = nhgis) +
   geom_sf(size = 0.1, color = "gray60", fill = "white") +
