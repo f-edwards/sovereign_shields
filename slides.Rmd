@@ -25,8 +25,6 @@ knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE, tidy = TRUE, s
 library(maps)
 source("main.R")
 state_map<-map_data("state")
-afcars_st<-afcars_st %>% 
-  mutate(region=tolower(state))
 fe_st<-fe_st %>% 
   mutate(region=tolower(state))
 ```
@@ -151,13 +149,13 @@ fe_yrs_n<-length(unique(fe_st$year))
 fe_st_plot<-fe_st %>% 
   ungroup() %>% 
   group_by(region) %>% 
-  summarise(value = mean(fe_deaths)/max(total_population_amind)* 1e5) %>%  # convert to deaths/100k/yr
+  summarise(value = mean(fe_deaths)/max(pop_aian_adult)* 1e5) %>%  # convert to deaths/100k/yr
   mutate(var="Deaths caused by police")
 
-afcars_st_plot<-afcars_st %>% 
+afcars_st_plot<-fe_st %>% 
   ungroup() %>% 
   group_by(region) %>% 
-  summarise(value = mean(fc_caseload/pop_child) * 100) %>% 
+  summarise(value = mean(fc_caseload/pop_aian_child) * 100) %>% 
   mutate(var = "Foster care caseload")
 
 plot_dat<-fe_st_plot %>% 
@@ -213,11 +211,11 @@ ggplot(plot_dat %>%
 ## Percent of AIAN children in state foster care in AIAN foster homes, 2004 - 2017 average
 
 ```{r}
-afcars_st_plot<-afcars_st %>% 
+afcars_st_plot<-fe_st %>% 
   ungroup() %>% 
   group_by(region) %>% 
-  summarise("Caseload" = mean(fc_caseload/pop_child, na.rm=TRUE) * 100,
-            "Entries" = mean(fc_entered/pop_child, na.rm=TRUE) *100,
+  summarise("Caseload" = mean(fc_caseload/pop_aian_child, na.rm=TRUE) * 100,
+            "Entries" = mean(fc_entered/pop_aian_child, na.rm=TRUE) *100,
             "Institutionalized" = mean(fc_inst/fc_caseload, na.rm=TRUE)*100,
             "In AIAN foster home" = mean(fc_aian_home, na.rm=TRUE)*100) %>% 
   pivot_longer(cols=c(Caseload, Entries, Institutionalized, `In AIAN foster home`), 
@@ -238,11 +236,29 @@ ggplot(afcars_st_plot %>%
   scale_fill_distiller(palette = "Spectral") 
 ```
 
-## Percent of AIAN children in state foster care in group homes or institutions, 2004 - 2017 average
+## Proportion of tribal governments with independent police, with arrest authority over tribal members off of tribal lands, with arrest authority over non-Indians on tribal lands, and with detention facilities, 2002
 
 ```{r}
-ggplot(afcars_st_plot %>% 
-         filter(var=="Institutionalized"),
+police_plot<-fe_st %>% 
+  ungroup() %>% 
+  group_by(region) %>% 
+  summarise("Tribal police" = mean(police_tribal),
+            "Arrest members off tribal land" = mean(police_tribal_off_res),
+            "Arrest non-Indians on tribal land" = mean(police_tribal_non_ind),
+            "Detention" = mean(jail)) %>% 
+  pivot_longer(cols=c("Tribal police":"Detention"), 
+               names_to = "var",
+               values_to = "value") %>% 
+  group_by(var) %>% 
+  left_join(state_map) %>% 
+  ungroup() %>% 
+  mutate(var = factor(var,
+                      levels = c("Tribal police", 
+                                 "Arrest members off tribal land",
+                                 "Arrest non-Indians on tribal land", 
+                                 "Detention")))
+
+ggplot(police_plot,
        aes(x=long, y = lat, fill = value,
            group = group)) + 
   geom_polygon(color = "black") + 
@@ -250,13 +266,164 @@ ggplot(afcars_st_plot %>%
   labs(fill = "") +
   theme(legend.position = "bottom") +
   coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
-  scale_fill_distiller(palette = "Spectral", limits = c(0,35)) 
+  scale_fill_distiller(palette = "Spectral") + 
+  facet_wrap(~var)
 ```
 
-## Proportion of tribal governments with categories of legal institutions by state, 2002
+## Proportion of tribal governments with independent courts, courts handling misdemeanors, and family courts, 2002
 
+```{r}
+courts_plot<-fe_st %>% 
+  ungroup() %>% 
+  group_by(region) %>% 
+  summarise("Courts" = mean(courts),
+            "Courts, misdemeanor" = mean(courts_misd),
+            "Courts, civil" = mean(courts_civil),
+            "Courts, family" = mean(courts_family)) %>% 
+  pivot_longer(cols=c("Courts":"Courts, family"), 
+               names_to = "var",
+               values_to = "value") %>% 
+  group_by(var) %>% 
+  left_join(state_map) %>% 
+  ungroup() 
+
+ggplot(courts_plot,
+       aes(x=long, y = lat, fill = value,
+           group = group)) + 
+  geom_polygon(color = "black") + 
+  theme_void() +
+  labs(fill = "") +
+  theme(legend.position = "bottom") +
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  scale_fill_distiller(palette = "Spectral") + 
+  facet_wrap(~var)
+```
 
 ## Models
+
+```{r}
+
+### for now, use state period average
+### and quasipoission glm
+
+fe_st_avg<-fe_st %>% 
+  filter(.imp==1) %>% 
+  group_by(stusps) %>% 
+  summarise(fe_deaths = sum(fe_deaths),
+            pc_income_ineq = mean(pc_income_ineq),
+            fc_entered = ceiling(mean(fc_entered)),
+            fc_istpr = ceiling(mean(fc_istpr)),
+            fc_caseload = ceiling(mean(fc_caseload)),
+            fc_aian_home = mean(fc_aian_home),
+            pop_aian_child = ceiling(mean(pop_aian_child)),
+            pop_aian_adult = ceiling(mean(pop_aian_adult)))
+
+fe_st_fixed<-fe_st %>% 
+  filter(.imp==1) %>% 
+  select(stusps, pl280, west_MS,
+         police_tribal, police_tribal_off_res,
+         police_tribal_non_ind, jail, courts, 
+         courts_misd, courts_civil, courts_family,
+         pop_pct_aian_aianh, pov_ratio) %>% 
+  distinct()
+
+fe_st_model<-fe_st_avg %>% 
+  left_join(fe_st_fixed)
+
+m_fc<-glm(fc_caseload ~ 
+            pl280 + west_MS +
+            police_tribal +
+            police_tribal_non_ind +
+            courts_misd +
+            courts_civil +
+            courts_family +
+            pop_pct_aian_aianh,
+          data = fe_st_model,
+          family = "quasipoisson",
+          offset =log(pop_aian_child))
+
+m_tpr<-glm(fc_istpr ~ 
+            pl280 + west_MS +
+            police_tribal +
+            police_tribal_non_ind +
+            courts_misd +
+            courts_civil +
+            courts_family +
+            pop_pct_aian_aianh,
+          data = fe_st_model,
+          family = "quasipoisson",
+          offset =log(pop_aian_child))
+
+m_aian_home<-lm(fc_aian_home ~ 
+            pl280 + west_MS +
+            police_tribal +
+            police_tribal_non_ind +
+            courts_misd +
+            courts_civil +
+            courts_family +
+            pop_pct_aian_aianh + 
+            log(pop_aian_child),
+          data = fe_st_model)
+
+m_fe<-glm(fe_deaths ~ 
+            pl280 + west_MS +
+            police_tribal +
+            police_tribal_non_ind +
+            courts_misd +
+            courts_civil +
+            courts_family +
+            pop_pct_aian_aianh,
+          data = fe_st_model,
+          family = "quasipoisson",
+          offset =log(pop_aian_adult))
+
+### simulation data
+stusps<-"XX"
+year<-2020
+pop_aian_adult<-1e5
+pop_aian_child<-1e5
+pl280<-c("Mandatory", "Optional", "Non-PL280")
+police_tribal<-seq(1,0)
+police_tribal_off_res<-c(1,0)
+police_tribal_non_ind<-seq(0,1,0.01)
+pop_pct_aian_aianh<-0.2
+jail<-c(1,0)
+courts<-c(1,0)
+courts_misd<-c(1,0)
+courts_civil<-c(1,0)
+courts_family<-seq(0,1,0.01)
+west_MS<-c(T)
+
+newdata<-expand_grid(stusps, year, west_MS,
+                     pop_aian_adult, pop_aian_child,
+                     pop_pct_aian_aianh,
+                     pl280, police_tribal, police_tribal_off_res,
+                     jail, courts_civil,
+                     police_tribal_non_ind, courts,
+                     courts_misd, courts_family)
+
+
+newdata$fe_yhat<-predict(m_fe, newdata, type = "response")
+newdata$fc_cl_yhat<-predict(m_fc, newdata, type = "response")
+newdata$fc_aian_home_yhat<-predict(m_aian_home, newdata, type = "response")
+newdata$fc_tpr_yhat<-predict(m_tpr, newdata, type = "response")
+
+
+## predict fe along police, police_tribal_off_res
+
+ggplot(newdata %>% 
+         filter(police_tribal==1, police_tribal_off_res==1,
+                courts==1, courts_misd==1, courts_civil==1, 
+                courts_family==1),
+       aes(x=police_tribal_non_ind, y = fe_yhat/10, #deaths/100k/yr
+           color = pl280)) +
+  geom_line() +
+  ylab("AIAN deaths per 100,000 per year") +
+  xlab("Proportion of agencies with arrest powers over non-Indians") + 
+  labs(color = "PL-280")
+
+```
+
 
 <!-- #### q0: do tribal lands protect aminds?  -->
 <!-- #### - is risk higher on tribal than non-tribal lands? -->

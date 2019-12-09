@@ -58,15 +58,35 @@ fe_st<-expands %>%
   left_join(fe_st) %>% 
   mutate(fe_deaths = ifelse(is.na(fe_deaths), 0 , fe_deaths)) %>% 
   filter(race=="amind") %>% 
+  select(-race) %>% 
   left_join(state_dat) %>% 
   left_join(afcars %>% 
               rename(statea=state)) %>% 
-  filter(year<2018) ## not a full year in FE anyway, for AFCARS 2017 is latest
+  filter(year<2018,
+         !stusps%in%c("AK", "HI")) 
+## not a full year in FE anyway, for AFCARS 2017 is latest
 
-afcars_st<-afcars %>%
-  rename(statea = state) %>% 
-  left_join(state_dat) %>% 
-  filter(!(statea)%in%c(2, 15)) # remove AK, HI. Add into state_dat later
-  
+fe_st<-fe_st %>% 
+  rename(pop_aian = total_population_amind,
+         pop_aian_child = pop_child) %>% 
+  mutate(pop_aian_adult = pop_aian-pop_aian_child) %>% 
+  select(-st_fips, -total_population)
 
+### make state-level aianh data
 
+aianh_state<-aianh_dat %>% 
+  group_by(state) %>% 
+  summarise(pop_aianh = sum(total_population_amind, na.rm=TRUE),
+            police_tribal = mean(police_tribal),
+            police_tribal_off_res = mean(police_tribal_off_res),
+            police_tribal_non_ind = mean(police_tribal_non_ind),
+            jail = mean(jail_tribal),
+            courts = mean(courts),
+            courts_misd = mean(courts_misd),
+            courts_civil = mean(courts_civil),
+            courts_family = mean(courts_family)) %>% 
+  rename(stusps=state) 
+
+fe_st<-fe_st %>% 
+  left_join(aianh_state) %>% 
+  mutate(pop_pct_aian_aianh = pop_aianh/pop_aian)

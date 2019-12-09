@@ -141,7 +141,7 @@ fe_amind_year<-fe_amind
 nhgis_csv_file <- "./data/nhgis0036_csv.zip"
 nhgis_shp_file <- "./data/nhgis0036_shapefile_tl2017_us_state_2017.zip"
 aian_csv_file <- "./data/nhgis0035_csv.zip"
-aian_shp_file <- "./data/nhgis0035_shape.zip"
+aian_shp_file <- "./data/nhgis00z_shape.zip"
 
 ### add state names, join to whatever data you are using
 nhgis <- read_nhgis_sf(
@@ -396,7 +396,7 @@ afcars_aian_st<-afcars_aian %>%
          fc_totalrem_mn = mean(totalrem),
          fc_inst = sum(curplset%in%c(4,5)),
          fc_aian_home = sum(curplset%in%c(1,2,3) * (rf1amakn==1|rf2amakn==1))/
-           sum(curplset%in%c(1,2,3)))
+           sum(curplset%in%c(1,2,3,4,5)))
 
 expands<-expand_grid(.imp=unique(afcars$.imp), 
                      state=unique(afcars$state),
