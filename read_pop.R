@@ -23,9 +23,8 @@ pop<-pop%>%
 
 pop_cnty<-pop%>%
   group_by(year, st_fips, cnty_fips, race_ethn, sex, age)%>%
-  summarise(pop = sum(pop))%>%
-  ungroup() %>% 
   summarise(child_pop = sum(pop) * (age<18),
+            adult_pop = sum(pop) * (age>=18),
             pop = sum(pop))
 
   
