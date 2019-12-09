@@ -1,3 +1,13 @@
+##############################
+##### read_with_shapes.r
+##### project: sovereign_shields
+##### author: fe
+##### last modified: 12/9/19
+##### last commit: revise read seer pop to write out 
+##### county and state totals, read those in without reprocess
+##### remove read of raw data
+
+
 rm(list=ls()); gc()
 library(tidyverse)
 library(haven)
@@ -9,32 +19,54 @@ select<-dplyr::select
 
 ################# read in data for 'sovereign shields'
 
-pop<-read_fwf("./data/us.1990_2017.singleages.adjusted.txt",
-              fwf_widths(c(4, 2, 2, 3, 2, 1, 1, 1, 2, 8),
-                         c("year", "state", "st_fips",
-                           "cnty_fips", "reg", "race",
-                           "hisp", "sex", "age", "pop"))) %>% 
-  filter(year>=2000) %>% 
-  mutate(year = year+1) # adjust for 2018 end point
+##### SEER Population data 
+### read raw on first pass, then read processed
 
-pop<-pop%>%
-  mutate(pop = as.integer(pop))%>%
-  mutate(race_ethn =
-           case_when(
-             race==1 & hisp ==0 ~ "White",
-             race==2 ~ "Black",
-             race==3 ~ "AIAN",
-             race==4 ~ "API",
-             hisp==1 ~ "Latinx")) %>%
-  mutate(age = as.integer(age)) 
+pop_st<-read_csv("./data/seer_pop_st.csv")
+pop_cnty<-read_csv("./data/seer_pop_cnty.csv")
 
-pop_st<-pop %>% 
-  group_by(st_fips, year, race_ethn) %>% 
-  summarise(pop = sum(pop)) %>% 
-  left_join(pop %>% 
-              group_by(st_fips, year, race_ethn) %>% 
-              filter(age<18) %>% 
-              summarise(pop_child = sum(pop)))
+# pop<-read_fwf("./data/us.1990_2017.singleages.adjusted.txt",
+#               fwf_widths(c(4, 2, 2, 3, 2, 1, 1, 1, 2, 8),
+#                          c("year", "state", "st_fips",
+#                            "cnty_fips", "reg", "race",
+#                            "hisp", "sex", "age", "pop"))) 
+# 
+# pop<-pop%>%
+#   mutate(pop = as.integer(pop))%>%
+#   mutate(race_ethn =
+#            case_when(
+#              race==1 & hisp ==0 ~ "White",
+#              race==2 ~ "Black",
+#              race==3 ~ "AIAN",
+#              race==4 ~ "API",
+#              hisp==1 ~ "Latinx")) %>%
+#   mutate(age = as.integer(age)) 
+# 
+# pop_st<-pop %>% 
+#   group_by(st_fips, year, race_ethn,
+#            .drop = F) %>% 
+#   summarise(pop = sum(pop)) %>% 
+#   left_join(pop %>% 
+#               group_by(st_fips, year, race_ethn,
+#                        .drop = F) %>% 
+#               filter(age<18) %>% 
+#               summarise(pop_child = sum(pop))) %>% 
+#   ungroup() %>% 
+#   mutate(pop_adult = pop-pop_child) %>% 
+#   write_csv("./data/seer_pop_st.csv")
+# 
+# pop_cnty<-pop %>% 
+#   group_by(st_fips, cnty_fips, year, race_ethn,
+#            .drop = F) %>% 
+#   summarise(pop = sum(pop)) %>% 
+#   left_join(pop %>% 
+#               group_by(st_fips, cnty_fips, year, race_ethn,
+#                        .drop = F) %>% 
+#               filter(age<18) %>% 
+#               summarise(pop_child = sum(pop))) %>% 
+#   ungroup() %>% 
+#   mutate(pop_adult = pop-pop_child) %>% 
+#   write_csv("./data/seer_pop_cnty.csv")
 
 ### directory of tribal leaders
 #govs<-read_csv("./data/TribalLeadersDirectory.csv")

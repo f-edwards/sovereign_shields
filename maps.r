@@ -1,6 +1,6 @@
 rm(list=ls()); gc()
 
-source("read.r")
+source("read_with_shapes.R")
 
 library(tidyverse)
 library(ipumsr)
@@ -27,22 +27,8 @@ laeabb <- st_transform(bb,
                        crs =  as.character(CRS("+init=esri:102003")@projargs))
 b <- st_bbox(laeabb)
 
-p1<-ggplot(data = nhgis) +
-  geom_sf(size = 0.1, color = "gray60", fill = "white") +
-  geom_sf(data = nhgis_aian,
-          color = "dodgerblue", fill = "dodgerblue",
-          alpha = 0.5, size = 0.01) +
-  coord_sf(crs = st_crs(nhgis), datum = NA,
-           xlim = c(b["xmin"], b["xmax"]),
-           ylim = c(b["ymin"], b["ymax"])) +
-  geom_point(data = fe_amind_conv%>%
-               filter(!loc_state%in%(c("AK", "HI", "PR"))),
-             aes(x = lon, y = lat),
-             size = 0.3) +
-  theme_void()+
-  labs(caption = "Dots indicate police-involved killings. Data from Fatal Encounters\nBlue areas indicate American Indian reservations, tribal subdivisions, and trust lands.")
-  theme(plot.subtitle= element_text(hjust = 0.5)) +
-  ggsave("./vis/map_aian_fe.png", width = 8, height = 6)
+ca_aianh<-aianh_dat %>% filter(state=="CA")
+ca_aianh<-as.character(ca_aianh$name)
 
 p1<-ggplot(data = nhgis) +
   geom_sf(size = 0.1, color = "gray60", fill = "white") +
@@ -57,7 +43,24 @@ p1<-ggplot(data = nhgis) +
              aes(x = lon, y = lat),
              size = 0.3) +
   theme_void()+
-  ggsave("./vis/map_aian_fe.pdf")
+  labs(caption = "Dots indicate police-involved killings. Data from Fatal Encounters\nBlue areas indicate American Indian reservations, tribal subdivisions, and trust lands.")
+theme(plot.subtitle= element_text(hjust = 0.5)) +
+  ggsave("./vis/map_aian_fe.png", width = 8, height = 6)
+
+# p1<-ggplot(data = nhgis) +
+#   geom_sf(size = 0.1, color = "gray60", fill = "white") +
+#   geom_sf(data = nhgis_aian,
+#           color = "dodgerblue", fill = "dodgerblue",
+#           alpha = 0.5, size = 0.01) +
+#   coord_sf(crs = st_crs(nhgis), datum = NA,
+#            xlim = c(b["xmin"], b["xmax"]),
+#            ylim = c(b["ymin"], b["ymax"])) +
+#   geom_point(data = fe_amind_conv%>%
+#                filter(!loc_state%in%(c("AK", "HI", "PR"))),
+#              aes(x = lon, y = lat),
+#              size = 0.3) +
+#   theme_void()+
+#   ggsave("./vis/map_aian_fe.pdf")
 
 ###### MORE MAPS!
 
