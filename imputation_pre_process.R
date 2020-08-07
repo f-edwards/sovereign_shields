@@ -23,39 +23,13 @@ fe_new<-fe%>%
          Longitude = ifelse(id==20157, -97.4412267, Longitude))
 
 # ###### run script to link lat/long -> FIPS block# 
-# coords<-fe_new%>%
-#   select(Latitude, Longitude)%>%
-#   mutate("FIPS_block" = NA,
-#          "FIPS_county" = NA,
-#          "FIPS_state" = NA,
-#          "STname" = NA,
-#          "API_status" = NA)
-# for(i in 1:nrow(coords)){
-#   url<-paste("https://geo.fcc.gov/api/census/block/find?latitude=",
-#              coords[i, 1],
-#              "&longitude=",
-#              coords[i, 2],
-#              "&showall=true&format=json",
-#              sep="")
-# 
-#   temp<-fromJSON(url)
-#   print(i)
-#   print(temp$status)
-# 
-#   coords[i, 3:7]<-c(temp$Block$FIPS,
-#                     temp$County$FIPS,
-#                     temp$State$FIPS,
-#                     temp$State$code,
-#                     temp$status)
-# 
-# }
-# 
-# write.csv(coords,
-#           "./data/block_map.csv", row.names = FALSE)
-
 
 block_map<-read_csv("./data/block_map.csv",
                     col_types = "ddccccc")
+
+if(nrow(block_map)!=nrow(fe_new)){
+  source("./read_fe_attach_census_block.r")
+}
 
 fe_new<-bind_cols(fe_new, block_map)
 

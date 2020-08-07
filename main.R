@@ -74,6 +74,13 @@ fe_st<-fe_st %>%
 
 ### make state-level aianh data
 
+aianh_dat <- aianh_dat %>% 
+  mutate(police_sov = police_tribal + police_tribal_staterecog +
+           police_tribal_off_res + police_tribal_non_ind + 
+           jail_tribal,
+         court_sov = courts_misd + courts_juv + courts_family + 
+           courts_civil + courts_probate)
+
 aianh_state<-aianh_dat %>% 
   group_by(state) %>% 
   summarise(pop_aianh = sum(total_population_amind, na.rm=TRUE),
@@ -84,7 +91,9 @@ aianh_state<-aianh_dat %>%
             courts = mean(courts),
             courts_misd = mean(courts_misd),
             courts_civil = mean(courts_civil),
-            courts_family = mean(courts_family)) %>% 
+            courts_family = mean(courts_family),
+            police_sov = mean(police_sov),
+            court_sov = mean(court_sov)) %>% 
   rename(stusps=state) 
 
 fe_st<-fe_st %>% 

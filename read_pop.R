@@ -5,9 +5,7 @@ library(tidyverse)
 pop<-read_fwf("./data/us.1990_2017.singleages.adjusted.txt",
               fwf_widths(c(4, 2, 2, 3, 2, 1, 1, 1, 2, 8),
                          c("year", "state", "st_fips", "cnty_fips", "reg", "race", 
-                           "hisp", "sex", "age", "pop"))) %>% 
-  filter(year>=2000)
-
+                           "hisp", "sex", "age", "pop")))
 gc()
 
 pop<-pop%>%
@@ -22,7 +20,8 @@ pop<-pop%>%
          )
 
 pop_cnty<-pop%>%
-  group_by(year, st_fips, cnty_fips, race_ethn, sex, age)%>%
+  group_by(year, st_fips, cnty_fips, race_ethn, sex, age,
+           .drop = F)%>%
   summarise(child_pop = sum(pop) * (age<18),
             adult_pop = sum(pop) * (age>=18),
             pop = sum(pop))

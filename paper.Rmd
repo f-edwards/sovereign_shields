@@ -1,13 +1,13 @@
 ---
-title: "Sovereign Shields: Law Enforcement and State Violence in Indian Country"
-author: "Theresa Rocha Beardall and Frank Edwards"
-date: "4/25/2019"
+title: "Sovereign Shields: Law Enforcement, Child Protection, and State Violence in Indian Country"
+author: "Frank Edwards and Theresa Rocha-Beardall"
+date: "3/16/2020"
 output:
   pdf_document: default
   word_document: default
   html_document: default
 abstract:
-  We evaluate the spatial distribution of police killings of American Indians across the lower 48 US states and American Indian home lands. We show that Native risk of being killed by police is a function of federal Indian law, tribal sovereignty, and structural disadvantage. We use data from Fatal Encounters, the Census of Tribal Justice Agencies, and the American Community Survey to provide tribal land and state-specific rates of police-involved deaths to estimate how risk varies across these geographies as a function of Native/white inequalities, law enforcement jurisdiction, and the strength of tribal legal institutions. American Indians are killed by police most frequently in states with high levels of Native/white income inequality, in states subject to Public Law 280 (which guarantees state and local governments jurisdiction over tribal communities), and in states West of the Mississippi River, where the violence of colonization and dispossession occurred more recently. On tribal lands, police-involved deaths are more common where tribes do not have exclusive criminal jurisdiction, and where tribal legal institutions are less robust. On reservations and tribal lands where communities operate their own courts and criminal justice institutions, rates of police killings are relatively low. These results suggest that police violence against Native people must be understood within the context of colonization and ongoing contests over the significance of tribal sovereignty and self-determination.
+  "Sovereign nations are charged with leveraging their legal status and resources to protect citizens from external threats. In this paper, we suggest that American Indian nations leverage their sovereignty to 'shield' American Indians from violence at the hands of settler colonial state actors. We broadly consider the scale and distribution of the exposure of American Indians to state violence at the hands of federal, state, and local actors with a focus on the criminal - legal system and the child welfare system. We suggest that American Indians' exposure to police violence, arrest, and incarceration is tightly correlated with American Indians' exposure to family separation through the child welfare system, and that these co-occurring forms of violence are intimately tied to histories and ongoing processes of disposession and genocide. Formally, we show that spatial and temporal variation in Native risk of exposure to settler colonial state violence is a function of federal Indian law, tribal sovereignty, and structural disadvantage. We use data from Fatal Encounters, the Census of Tribal Justice Agencies, the Census of Jails, the Annual Survey of Jails, the Uniform Crime Reports, the American Community Survey, the Adoption and Foster Care Analysis and Reporting System, and the National Child Abuse and Neglect Data System to estimate how risk varies across these geographies as a function of the status and strength of tribal sovereigns. "
 ---
 
 ## Introduction
@@ -56,21 +56,16 @@ Building from this long political history between tribal nations and the federal
 
 Colonial treaty-making, tribal land dispossession, and Indian removal began along the Atlantic coast and rapidly moved Native Peoples west. The primary desire was to remove tribal nations from desirable lands in the east. The use of force by federal agents was commonplace in accomplishing this goal. We hypothesize that this coercive history plays a defining role in how tribal nations continue to engage with law enforcement west of the Mississippi River.
 
-Throughout the late 1700s and early 1800s, federal officials believed that American Indians would either vanish or assimilate under the will of the expanding American nation. When this proved not to be the case, federal policy was prepared to intervene with force. An 1819 House Report regarding funding for civilization and assimilation programs confirms this position. It reads: “In the present state of our country one of two things seems to be necessary. Either that those sons of the forest should be moralized or exterminated” (CITATION HERE). We hypothesize that this assumption of American Indian subordination continues to inform how state agents engage with this population in high-contact zones.
+Throughout the late 1700s and early 1800s, federal officials believed that American Indians would either vanish or assimilate under the will of the expanding American nation. When this proved not to be the case, federal policy was prepared to intervene with force. An 1819 House Report regarding funding for civilization and assimilation programs confirms this position. It reads: “In the present state of our country one of two things seems to be necessary. Either that those sons of the forest should be moralized or exterminated”. We hypothesize that this assumption of American Indian subordination continues to inform how state agents engage with this population in high-contact zones.
 
 We suggest that Native death by law enforcement will occur more often in geographic locations most impacted by Termination Era federal Indian policy (1947-1961). Two products of this era stand out – Public Law 280 and the American Indian Urban Relocation Program – because of their distinct role in expanding law enforcement jurisdiction over Native Peoples.
 
-PL 280 complicated tribal-state relations and strained tribal legal systems. Due to the tribes’ active resistance against this unwanted jurisdictional sharing, we anticipate that in these states (Alaska, California, Minnesota, Nebraska, Oregon, and Wisconsin), violent encounters with law enforcement will be more frequent. Similarly, we anticipate that those urban spaces, which received tribal members during the American Indian Urban Relocation Program more frequently than others (FUTURE REVISIONS WILL ANALYTICALLY ADDRESS URBAN RELOCATION), continue to experience higher than average fatal encounters.
+PL 280 complicated tribal-state relations and strained tribal legal systems. Due to the tribes’ active resistance against this unwanted jurisdictional sharing, we anticipate that in these states (Alaska, California, Minnesota, Nebraska, Oregon, and Wisconsin), violent encounters with law enforcement will be more frequent. Similarly, we anticipate that those urban spaces, which received tribal members during the American Indian Urban Relocation Program more frequently than others, continue to experience higher than average fatal encounters.
 
 
 ## Analytic strategy
 
-We evaluate how American Indians’ risk of being killed by police varies across states and tribal lands. We use population, police killing, and surveys of tribal governments to systematically evaluate how a) state and local criminal jurisdiction, b) proximity to the Mississippi River (WILL BE MEASURED AS DISTANCE IN FUTURE REVISIONS), c) the presence or absence of tribal legal institutions, and d) structural inequalities are related to rates at which Native people are killed by state and by tribal home land (reservations, trust lands, and other American Indian lands). We provide a series of descriptions of the distributions of these measures, followed by regression models that evaluate how rates of death are related to sovereignty, jurisdiction, geography, and disadvantage.
-
-Because Alaskan and Hawaiian native lands are subject to different bodies of law, we restrict this analysis to the lower 48 US states.
-
-Future revisions will include additional criminal justice outcomes, including arrests and incarceration obtained through the Uniform Crime Reports and National Corrections Reporting Program. We will also extend this analysis to include analysis of family separations through the child welfare system using data from the Adoption and Foster Care Analysis and Reporting System.
-We appreciate the discussant’s willingness to review this work-in-progress.
+We evaluate how American Indians’ risk of being killed by police varies across states and tribal lands. We use population, police killing, and surveys of tribal governments to systematically evaluate how a) state and local criminal jurisdiction, b) proximity to the Mississippi River, c) the presence or absence of tribal legal institutions, and d) structural inequalities are related to rates at which Native people are killed by state and by tribal home land (reservations, trust lands, and other American Indian lands). We provide a series of descriptions of the distributions of these measures, followed by regression models that evaluate how rates of death are related to sovereignty, jurisdiction, geography, and disadvantage.
 
 ## Data
 
@@ -80,7 +75,7 @@ In future work on this project, our team will systematically re-code the race/et
 
 We use 2000 - 2019 data on deaths occurring on tribal lands, matched by merging FE with US Census American Indian home land shape files. We identify 87 deaths with a victim identified as American Indian occurring on tribal lands over this time period. For states, we restrict our analysis to 2013 - 2018 (where race/ethnicity data are of higher quality in FE) and estimate state-year regression models of counts of police-involved deaths of American Indians. Over this 6-year period, FE identifies 108 deaths of Native people.
 
-We use the spatial coordinates provided by Fatal Encounters to identify deaths occurring on or near American Indian homelands using the Census American Indian homeland shapefiles. This shapefile identifies federally recognized American Indian reservations and off-reservation trust land areas and state-recognized American Indian reservations. It also includes information on Oklahoma tribal statistical areas, tribal designated statistical areas, and state designated tribal statistical areas. We link FE cases to these lands, and also include information on a series of demographic measures from the American Community Survey (ACS) 2013 - 2017 5-year data for each of these tribal lands, obtained via NHGIS (CITATION). We use the ACS to construct ratios of population well-being for tribal lands relative to full state populations to compare population conditions in Indian Country to state averages for each state with tribal land.
+We use the spatial coordinates provided by Fatal Encounters to identify deaths occurring on or near American Indian homelands using the Census American Indian homeland shapefiles. This shapefile identifies federally recognized American Indian reservations and off-reservation trust land areas and state-recognized American Indian reservations. It also includes information on Oklahoma tribal statistical areas, tribal designated statistical areas, and state designated tribal statistical areas. We link FE cases to these lands, and also include information on a series of demographic measures from the American Community Survey (ACS) 2013 - 2017 5-year data for each of these tribal lands, obtained via NHGIS. We use the ACS to construct ratios of population well-being for tribal lands relative to full state populations to compare population conditions in Indian Country to state averages for each state with tribal land.
 
 Information on tribal legal institutions is obtained from the Census of Tribal Justice Agencies. This 2002 dataset provides detailed descriptions of tribal law enforcement and tribal court systems. It provides the most comprehensive systematic data on tribal legal infrastructure currently available. In the 2002 wave, 314 of the 341 federally recognized American Indian tribes in the lower 48 US states participated in this census. We manually match these tribal government-level data to American Indian lands provided in Census shape files.
 
@@ -101,27 +96,28 @@ Next we evaluate the relationships between tribal criminal justice jurisdiction 
 
 ### Police killings of American Indians
 
-Between 2000 and 2018, Fatal Encounters recorded 209 police-involved non-suicide deaths of American Indians and Alaska Natives in the lower 48 states of the US. We show the distribution of these killings across states and tribal lands in Figure F1. Of these, 87 (42 percent) occurred on tribal lands. A large remainder of the deaths recorded in FE occurred near tribal land, or in cities with large populations of American Indians. Future analyses will identify deaths occuring at the interstices of US and tribal land and deaths occurring in cities that were host to large numbers of American Indians during the termination era. 
+Between 2000 and 2018, Fatal Encounters recorded 209 police-involved non-suicide deaths of American Indians and Alaska Natives in the lower 48 states of the US. We show the distribution of these killings across states and tribal lands in Figure F1. Of these, 87 (42 percent) occurred on tribal lands. A large remainder of the deaths recorded in FE occurred near tribal land, or in cities with large populations of American Indians. Future analyses will identify deaths occurring at the interstices of US and tribal land and deaths occurring in cities that were host to large numbers of American Indians during the termination era. 
 
-![Figure F1: Police killings of American Indians and Alaska Natives. Blue indicates tribal homeland. Dot indicates AIAN person killed by police, 2000 - 2018](./vis/map_aian_fe.png)
+![Figure F1: Police killings of American Indians and Alaska Natives. Blue indicates tribal homeland. Dot indicates AIAN person killed by police, 2000 - 2018](./vis/map_fe_aian.png)
 
 Figure F2 displays the rates of police involved killing of American Indians per 100,000 person-years across the lower 48 US States. States West of the Mississippi River tend to have higher rates of police-involved killings of American Indians that do states East of the Mississippi. South Dakota has the highest rate of killings in the country, though Nebraska, North Dakota, and Iowa also have exceptionally high rates of police-involved killings of Native people as well. 
 
-![Figure F2: Police killings of American Indians and Alaska Natives per year per 100,000 population, 2013 - 2018](./vis/map_fe_aian_st.png)
+![Figure F2: Police killings of American Indians and Alaska Natives per year per 100,000 population, 2013 - 2018](./vis/map_fe_st.png)
 
 ### The distribution of structural disadvantage and inequality in Indian Country
 
-Figure F3 displays inequality between persons living in American Indian homelands and persons living in the states. In the average state there are 1.8 times more poor people per capita living on American Indian homelands than in the state as a whole. Poverty is more common on American Indian homelands than in the state in all but 4 of the 30 states in the lower 48 that have federally recognized tribal lands. The average ratio of unemployment rates on tribal lands to state unemployment rates is 2.1. Unemployment is higher on tribal lands in 83 percent of states. 
-
-![Figure F3: Inequality in poverty and unemployment. Ratio of rates in American Indian Homelands over rates in states, 2013 - 2017.](./vis/map_ineq.png)
+In the average state there are 1.8 times more poor people per capita living on American Indian homelands than in the state as a whole. Poverty is more common on American Indian homelands than in the state in all but 4 of the 30 states in the lower 48 that have federally recognized tribal lands. The average ratio of unemployment rates on tribal lands to state unemployment rates is 2.1. Unemployment is higher on tribal lands in 83 percent of states. 
 
 ### The distribution of tribal legal institutions
 
-Figure F4 displays the proportion of tribal governments that reported operating various classes of legal institutions on the 2002 Census of Tribal Justice Agencies. Among the 92 percent of tribal governments $(n = 322)$ that responded to the CTJA in 2002 in the lower 48 states, 54 percent reported operating a tribal court; 22 percent reported operating a jail; and 55 percent reported operating a police agency.
+Figures F3 and F4 display the proportion of tribal governments that reported operating various classes of legal institutions on the 2002 Census of Tribal Justice Agencies. Among the 92 percent of tribal governments $(n = 322)$ that responded to the CTJA in 2002 in the lower 48 states, 54 percent reported operating a tribal court; 22 percent reported operating a jail; and 55 percent reported operating a police agency.
 
-NOTE TO DISCUSSANT: The Census of Tribal Justice Agencies provides far more depth to consider measurement of tribal legal infrastructure and jurisdiction. We are pursuing a more nuanced measurement strategy for future revisions that will provide a more comprehensive set of measures of both the presence/absence of institutions as well as their jurisdiction and organizational complexity (as measured through staffing levels). 
+The Census of Tribal Justice Agencies provides far more depth to consider measurement of tribal legal infrastructure and jurisdiction. We are pursuing a more nuanced measurement strategy for future revisions that will provide a more comprehensive set of measures of both the presence/absence of institutions as well as their jurisdiction and organizational complexity (as measured through staffing levels). Future work will also include additional batteries of measures constructed through systematic law reviews, and other sources of secondary data.
 
-![Figure F4: Proportion of tribal governments with categories of legal institutions by state, 2002](./vis/map_legal.png)
+![Figure F3: Proportion of tribal governments with categories of legal institutions by state, 2002](./vis/map_inst_police.png)
+
+![Figure F4: Proportion of tribal governments with categories of legal institutions by state, 2002](./vis/map_inst_courts.png)
+
 
 ### Model results, American Indian deaths on tribal lands
 
@@ -135,20 +131,15 @@ We model the expected number of American Indians killed by police, $d$ in Americ
 
 \[ \zeta \sim N(0, \sigma^2)\]
 
-Figure F5 shows the estimated relationship between the structural disadvantage of American Indians on tribal lands, the presence of tribal legal institutions, and rates of police-involved deaths for each class of PL-280 states. Structural disadvantage measures include poverty rates, unemployment rates, persons over 25 without a high school diploma or equivalent credential per capita, and per capita income. We systematically and jointly vary these measures from their observed 10th percentile to their observed 90th percentile, and provide predicted values with a plus or minus one standard error prediction interval. 
+Figure F5 shows the estimated relationship between the extent of tribal jurisdiction over non-Indians and rates of police-involved deaths for each class of PL-280 states. Rates are higher in mandatory and optional PL-280 states than in non-PL280 states. On lands where tribal governments have broad jurisdiction and do not have to defer to state and local law enforcement for policing on tribal lands rates of police-involved killings are much lower. 
 
-![Figure F5: Predicted AIAN deaths per 100,000 persons with +/- 1 SE uncertainty interval](./vis/preds_disadv.png)
-
-Figure F5 shows that structural disadvantage is systematically related to police-involved killings of American Indians. On tribal lands where American Indians are more likely to be unemployed, in poverty, have low incomes, and are less likely to have completed high school, police kill more American Indians. 
-
-Rates are higher in mandatory and optional PL-280 states than in non-PL280 states. On lands where tribal governments have their own legal institutions and law enforcement agencies, rates of police-involved killings are lower than on those tribal lands where governments do not have their own legal institutions. 
-
-![Figure F6: Predicted AIAN deaths per 100,000 persons per year](./vis/preds_state.png)
-Figure F6 shows these relationships at the state-level. Here again, non-PL 280 states have far lower rates of police killings of Native people than do PL 280 states. States West of the Mississippi River also have dramatically higher rates of police-involved killings of Native people than do states East of the Mississippi. Lower levels of Native/white economic inequality are associated with lower rates of death.
+![Figure F5: Predicted AIAN deaths per 100,000 persons per year](./vis/model_fe.png)
 
 ## Discussion and Conclusion
 
-Note to discussant: apologies for the lack of a discussion and synthesis of our main findings. We will return to specific examples of police killings raised in the introduction to explore how jurisdiction played a role in these deaths. We will also provide a discussion that uses Vine Deloria Jr's "Behind the Trail of Broken Treaties" to contextualize our findings. We will finally note that policing is one piece of a larger story of how state and local governments continue to destabilize and undermine tribal sovereignty and community well-being in Indian country. Future work will explicitly make links between policing, corrections, child welfare systems, and structural inequalities in Indian Country. 
+While the colonial legacy of anti-Indian violence is likely the key force driving these killings, we suggest that tribal sovereignty is operating as a “sovereign shield” against police violence. That is, tribes may indeed be using their sovereignty as a shield to protect their community members from coercion at the hands of local, state, and federal government agencies. Sovereignty provides a nation with exclusive jurisdiction over a defined area of land, people, and resources, upon which a sovereign can promote the health, safety, and well-being of its peoples. Efforts to protect members from violence from external actors are consistent 
+
+However, tribes are likely to seek to shield their members not only from police violence, but also from a broader set of violent intrusions from state, local, and federal agents. In future work, we will consider whether and how sovereignty impacts other forms of criminal justice involvement, such as arrest and incarceration, and non-criminal justice outcomes that are nonetheless disruptive and violent, such as family separations through the child welfare system.
 
 REFERENCES
  
@@ -165,7 +156,7 @@ Deloria, Vine Jr. and Raymond J. DeMallie. 1999. Deloria: DOCUMENTS OF INDIAN
 DIPLOMACY, VOLUMES I AND II: Documents of American Indian Diplomacy. 
 Norman: University of Oklahoma Press.
 
-Friends of the Indians in the Assimilationist Era. XX. [Lookup Speech Citation]
+Friends of the Indians in the Assimilationist Era. 
  
 Lartey, Jamiles. 2016. “Justice Department Investigating Fatal Police Shooting of Loreal Tsingine.” The Guardian. Retrieved May 5, 2019
  

@@ -1,0 +1,118 @@
+---
+title: "Sovereign Shields: State Violence in Indian Country"
+author: "Frank Edwards and Theresa Rocha Beardall"
+date: "August 8, 2020"
+output: beamer_presentation
+---
+
+## Settler state violence and tribal sovereignty
+
+- Despite guarantees of sovereignty in policing and child welfare, AIAN people continue to experience high levels of violence from the settler state
+- We consider how colonial political relationships structure exposure to various forms of state violence
+
+## State violence and American Indians and Alaska Natives: police
+
+\begin{center}
+  \includegraphics[width = \linewidth]{./vis/lifetime_ineq.png}
+\end{center}
+
+\tiny Edwards, Lee and Esposito. 2019. ``Risk of being killed by police use of force in the United States by age, race–ethnicity, and sex''. Proceedings of the National Academy of Sciences 116 (34)
+
+## American Indians and Alaska Natives killed by police: 2019 - 2020
+
+Adrienne Whitefeather (35), Kara Jean Cloud (28), Henry Barnes Jr. (25), Timothy Thomas (47), Neal Stuart Nevada (23), Jeremy Dewey (27), Hans Alejandro Huitz (51), Bernadette Youngbear (58), Reece Quiocho-Sumera (22), Neil Lyle Chiago Jr. (18), Bobby Lee Vaughn (54), Anderson "Andy" Antelope (50), Daniel Abel (35), Stonechild Chiefstick (39), Deion "Yonny" Slim aka Deion Grayhat (26), Wendell Van Kee Howard Baier (24), John Duane Fairbanks (40), Henry William Lane (42), Clarence Isadore "Chucky" Leading Fighter (32), Kevin Ray McEnulty (25), Shawn Taylor Watie (27), Brandon Starr Robertson (34), Jacob "Jake" Archambault (25), Royce Grayson Timberwolf (22)
+
+## Native nationhood 
+
+- Tribal governments are 'domestic dependent nations', formally subordinate to the US federal government
+- There are 573 federally recognized American Indian nations and Alaska Native tribes within the borders of the US; many more tribal communities are not federally recognized
+- Federal recognition generally formalizes rights and jurisdiction over land, people and resources
+- Expands the possibility of government-to-government relationships, including resistance to external coercion
+
+## Native nationhood and the law
+
+- Treaties delineated geographic and social relationships between American Indians and settlers
+- Treaty making ended in 1871; practices of elimination, removal, and containment have persisted
+- A range of federal programs used to manage and contain dispossessed and relocated tribes (e.g. federal law enforcement, boarding schools, land allotment)
+- The social space and legal complexity of subrdinated sovereignty and ongoing disposession has created 'jurisdictional mazes' with routine struggles over authority (e.g. *McGirt v. Oklahoma* (2020))
+
+## Law enforcement and social control in Indian Country
+
+- Public Law 280 (1953, amended 1968) transferred jurisdiction over civil and criminal matters from federal to state legal authorities in 6 states (CA, MN, NE, OR, WI, and AK), with others allowed to transfer jurisdiction in full or in part later (AZ, FL, ID, IA, MT, NV, ND, SD, UT, WA). 
+- Most tribes did not consent to transfer of jurisdiction, and state policies and practices often constrain tribal public safety efforts
+- Federal funds are not attached to transferred jurisdictions, and implementation is inconsistent: leads to particular form of 'distorted responsiveness' (Prowse, Weaver and Meares, 2019)
+
+## Theory: Agents of empire and sovereignty as a shield
+
+- 'Agents of empire' are actors affiliated with the settler state that work to assimilate and regulate AIAN communities: include Indian Agents, federal law enforcement, state and local law enforcement, and welfare and child welfare organizations.
+- Tribes can leverage their sovereignty as both legal authority and organizational capacity to shield members from exposure to violence from various agents of empire
+- Constrained tribal sovereignty increases the possibility for exposure to settler state violence
+
+## Empirical questions
+
+- Are American Indians more likely to experience state violence in places with more constraints on tribal sovereignty?
+- Are American Indians less likely to experience state violence in places with higher levels of tribal sovereignty?
+
+## Public Law 280
+
+\begin{center}
+  \includegraphics[width = \linewidth]{./vis/map_pl280.jpg}
+\end{center}
+
+
+## Data and methods
+
+- Fatal Encounters use of force deaths with Ameican Indian victims in the lower 48 US states 2008 - 2019 (192 deaths)
+  - These are conservative counts: AIAN people are likely undercounted in FE
+- Census of Tribal Justice Agencies (2002)
+- Additional data: ACS; AFCARS
+
+# Findings 
+
+## American Indians killed by police, 2008 - 2019
+
+\begin{center}
+  \includegraphics[width=\linewidth]{./vis/map_fe_aian.png}
+\end{center}
+
+## American Indians killed by police per 100,000 per year, 2000 - 2018
+
+\begin{center}
+  \includegraphics[width=\linewidth]{./vis/map_fe_st.png}
+\end{center}
+
+## Tribal police and scope of jurisdiction (2002)
+
+\begin{center}
+  \includegraphics[width=\linewidth]{./vis/map_inst_police.png}
+\end{center}
+
+## Tribal courts (2002)
+
+\begin{center}
+  \includegraphics[width=\linewidth]{./vis/map_inst_courts.pdf}
+\end{center}
+
+## Police deaths are a function of sovereignty
+
+\begin{center}
+  \includegraphics[width=\linewidth]{./vis/model_fe.png}
+\end{center}
+
+## Discussion
+
+- Police kill American Indians more frequently in places where tribal sovereignty is constrained
+- Police violence is political
+- Impacts of sovereignty not limited to police violence
+
+## Foster care
+
+\begin{center}
+  \includegraphics[width=\linewidth]{./vis/model_fc.png}
+\end{center}
+
+## Next Steps
+
+- Develop a new law-review based set of measures of tribal sovereignty for all tribal governments in the lower 48 US states
+- Multiple criminal justice sytem measures
+- Qualitative case studies of how tribal governments use sovereignty as a protective force
