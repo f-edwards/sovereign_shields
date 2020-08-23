@@ -141,7 +141,7 @@ fe_amind_year<-fe_amind
 nhgis_csv_file <- "./data/nhgis0036_csv.zip"
 nhgis_shp_file <- "./data/nhgis0036_shapefile_tl2017_us_state_2017.zip"
 aian_csv_file <- "./data/nhgis0035_csv.zip"
-aian_shp_file <- "./data/nhgis00z_shape.zip"
+aian_shp_file <- "./data/nhgis0035_shape.zip"
 
 ### add state names, join to whatever data you are using
 nhgis <- read_nhgis_sf(
@@ -365,7 +365,7 @@ saveRDS(state_dat%>%
         "./data/state_dat.rds")
 
 ### read in afcars
-afcars<-read_csv("./data/afcars_imputed_all_cases.csv")
+# afcars<-read_csv("./data/afcars_imputed_all_cases.csv")
 
 #### join to pop data
 # pop_st<-pop_st %>% 
@@ -376,42 +376,42 @@ afcars<-read_csv("./data/afcars_imputed_all_cases.csv")
 #   rename(pop_child_aian=`AI/AN`,
 #          pop_child_white = White)
 
-afcars_aian<-afcars %>% 
-  filter(year>2003) %>% 
-  filter(race_ethn=="AI/AN") %>% 
-  filter(.imp!=0) %>% 
-  filter(state!=72)
+# afcars_aian<-afcars %>% 
+#   filter(year>2003) %>% 
+#   filter(race_ethn=="AI/AN") %>% 
+#   filter(.imp!=0) %>% 
+#   filter(state!=72)
+# 
+# na_to_zero<-function(x){ifelse(is.na(x),0,x)}
+# 
+# afcars_aian<-afcars_aian %>% 
+#   mutate_at(vars(rf1amakn, rf2amakn, rf1nhopi, rf2nhopi),
+#             na_to_zero) 
+# 
+# afcars_aian_st<-afcars_aian %>% 
+#   group_by(.imp, state, year) %>% 
+#   summarise(fc_entered = sum(entered),
+#          fc_istpr = sum(istpr),
+#          fc_caseload = n(),
+#          fc_totalrem_mn = mean(totalrem),
+#          fc_inst = sum(curplset%in%c(4,5)),
+#          fc_aian_home = sum(curplset%in%c(1,2,3) * (rf1amakn==1|rf2amakn==1))/
+#            sum(curplset%in%c(1,2,3,4,5)))
+# 
+# expands<-expand_grid(.imp=unique(afcars$.imp), 
+#                      state=unique(afcars$state),
+#                      year= unique(afcars$year)) %>% 
+#   filter(.imp>0, year>2003, state!=72)
+# 
+# afcars_aian_st<-expands %>% 
+#   left_join(afcars_aian_st)%>% 
+#   left_join(pop_st %>% 
+#               filter(race_ethn == "AIAN") %>% 
+#               select(st_fips, year, pop_child) %>% 
+#               mutate(state = as.numeric(st_fips))) %>% 
+#   mutate_at(c("fc_istpr", "fc_caseload", "fc_inst", "fc_entered"), 
+#             function(x){ifelse(is.na(x), 0, x)})
+# 
+# write_csv(afcars_aian_st, "./data/afcars_aian_st.csv")
 
-na_to_zero<-function(x){ifelse(is.na(x),0,x)}
-
-afcars_aian<-afcars_aian %>% 
-  mutate_at(vars(rf1amakn, rf2amakn, rf1nhopi, rf2nhopi),
-            na_to_zero) 
-
-afcars_aian_st<-afcars_aian %>% 
-  group_by(.imp, state, year) %>% 
-  summarise(fc_entered = sum(entered),
-         fc_istpr = sum(istpr),
-         fc_caseload = n(),
-         fc_totalrem_mn = mean(totalrem),
-         fc_inst = sum(curplset%in%c(4,5)),
-         fc_aian_home = sum(curplset%in%c(1,2,3) * (rf1amakn==1|rf2amakn==1))/
-           sum(curplset%in%c(1,2,3,4,5)))
-
-expands<-expand_grid(.imp=unique(afcars$.imp), 
-                     state=unique(afcars$state),
-                     year= unique(afcars$year)) %>% 
-  filter(.imp>0, year>2003, state!=72)
-
-afcars_aian_st<-expands %>% 
-  left_join(afcars_aian_st)%>% 
-  left_join(pop_st %>% 
-              filter(race_ethn == "AIAN") %>% 
-              select(st_fips, year, pop_child) %>% 
-              mutate(state = as.numeric(st_fips))) %>% 
-  mutate_at(c("fc_istpr", "fc_caseload", "fc_inst", "fc_entered"), 
-            function(x){ifelse(is.na(x), 0, x)})
-
-write_csv(afcars_aian_st, "./data/afcars_aian_st.csv")
-
-quit(save="no")
+# quit(save="no")

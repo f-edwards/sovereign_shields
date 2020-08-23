@@ -43,7 +43,7 @@ p1<-ggplot(data = nhgis) +
              aes(x = lon, y = lat),
              size = 0.3) +
   theme_void()+
-  labs(caption = "Dots indicate police-involved killings. Data from Fatal Encounters\nBlue areas indicate American Indian reservations, tribal subdivisions, and trust lands.")
+  labs(caption = "Dots indicate police-involved killings. Data from Fatal Encounters\nBlue areas indicate American Indian reservations, tribal subdivisions, and trust lands.") +
 theme(plot.subtitle= element_text(hjust = 0.5)) +
   ggsave("./vis/map_aian_fe.png", width = 8, height = 6)
 
